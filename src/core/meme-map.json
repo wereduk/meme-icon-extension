@@ -1,0 +1,43 @@
+{
+  "values": {
+    "69": "♋︎",
+    "420": "🌿",
+    "666": "😈",
+    "1337": "🤓",
+    "2137": "🍰",
+    "80085": "📚",
+    "8008": "🍣"
+  },
+  "regexPatterns": [
+    {
+      "pattern": "\\b69\\b",
+      "replacement": "♋︎",
+      "enabled": true,
+      "description": "Nice meme"
+    },
+    {
+      "pattern": "\\b420\\b",
+      "replacement": "🌿",
+      "enabled": true,
+      "description": "Blaze it"
+    },
+    {
+      "pattern": "\\b666\\b",
+      "replacement": "😈",
+      "enabled": true,
+      "description": "Devil number"
+    },
+    {
+      "pattern": "\\b1337\\b",
+      "replacement": "🤓",
+      "enabled": true,
+      "description": "Leet speak"
+    },
+    {
+      "pattern": "\\b2137\\b",
+      "replacement": "🍰",
+      "enabled": true,
+      "description": "Polish independence"
+    }
+  ]
+}

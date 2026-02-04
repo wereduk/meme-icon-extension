@@ -1,0 +1,27 @@
+node_modules/
+dist/
+*.zip
+*.xpi
+.DS_Store
+*.log
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build artifacts
+*.tgz
+build-*.log

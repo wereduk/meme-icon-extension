@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Meme Icon Extension",
+  "version": "0.1.0",
+  "description": "Replace meme values with emojis (69 → ♋︎, etc)",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "exclude_matches": [
+        "about:*",
+        "data:*",
+        "safari-extension:*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Meme Icon Extension"
+  },
+  "safari": {
+    "permissions": [
+      "webNavigation"
+    ]
+  }
+}

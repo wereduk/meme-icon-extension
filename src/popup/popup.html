@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Icon Extension</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      min-height: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: #f5f7fa;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 1.5em;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 24px;
+    }
+
+    section h2 {
+      font-size: 1.1em;
+      color: #333;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch:hover {
+      border-color: #667eea;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #667eea;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .status {
+      font-size: 0.9em;
+      color: #666;
+      flex: 1;
+    }
+
+    .status.enabled {
+      color: #4caf50;
+      font-weight: 500;
+    }
+
+    .meme-list {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+    }
+
+    .meme-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.95em;
+    }
+
+    .meme-item:last-child {
+      border-bottom: none;
+    }
+
+    .meme-key {
+      font-weight: 500;
+      color: #333;
+      min-width: 40px;
+    }
+
+    .meme-arrow {
+      color: #999;
+      margin: 0 8px;
+      font-size: 0.9em;
+    }
+
+    .meme-emoji {
+      font-size: 1.2em;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 1px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f7fa;
+    }
+
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #1565c0;
+      margin-top: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .stat-card .label {
+      font-size: 0.8em;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    footer {
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 20px;
+      font-size: 0.8em;
+      color: #999;
+      text-align: center;
+      background: white;
+    }
+
+    .error {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 0.9em;
+    }
+
+    .success {
+      color: #388e3c;
+      background: #e8f5e9;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 0.9em;
+    }
+
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1e1e1e;
+      }
+
+      .container {
+        background: #2d2d2d;
+      }
+
+      main {
+        color: #e0e0e0;
+      }
+
+      section h2 {
+        color: #f0f0f0;
+      }
+
+      .toggle-switch,
+      .meme-list,
+      .stat-card,
+      footer {
+        background: #3a3a3a;
+        border-color: #555;
+      }
+
+      .meme-item {
+        border-bottom-color: #444;
+      }
+
+      .meme-key {
+        color: #f0f0f0;
+      }
+
+      .meme-arrow,
+      .stat-card .label {
+        color: #999;
+      }
+
+      .info-box {
+        background: #1e3a5f;
+        border-left-color: #2196f3;
+        color: #64b5f6;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎭 Meme Icons</h1>
+      <p>Replace meme values with emojis</p>
+    </header>
+
+    <main>
+      <div id="notification" style="display: none;"></div>
+
+      <!-- Enable/Disable Section -->
+      <section>
+        <h2>Extension Status</h2>
+        <div class="toggle-switch">
+          <label class="switch">
+            <input type="checkbox" id="enableToggle" checked>
+            <span class="slider"></span>
+          </label>
+          <span class="status enabled" id="statusText">Active</span>
+        </div>
+      </section>
+
+      <!-- Statistics Section -->
+      <section>
+        <h2>Statistics</h2>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="number" id="memeCount">0</div>
+            <div class="label">Meme Values</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="replacementCount">0</div>
+            <div class="label">Replacements</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meme Values Section -->
+      <section>
+        <h2>📋 Meme Values</h2>
+        <div class="meme-list" id="memeList">
+          <div style="padding: 16px; text-align: center; color: #999;">
+            Loading meme values...
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section>
+        <div class="button-group">
+          <button class="btn-secondary" id="resetButton">Reset</button>
+          <button class="btn-primary" id="testButton">Test Replacement</button>
+        </div>
+        <div class="info-box">
+          💡 <strong>Tip:</strong> Meme values are only replaced in regular text, not in dialogs or input fields.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Version 0.1.0 | <a href="#" id="settingsLink" style="color: inherit; text-decoration: none;">Settings</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
