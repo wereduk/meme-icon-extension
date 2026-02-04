@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background with gradient -->
+  <rect width="128" height="128" fill="url(#grad128)" rx="19"/>
+  
+  <!-- Highlight/shine effect -->
+  <ellipse cx="38" cy="38" rx="32" ry="26" fill="white" opacity="0.15"/>
+  
+  <!-- Happy mask (left side) -->
+  <circle cx="26" cy="64" r="38" fill="white"/>
+  <!-- Eyes for happy mask -->
+  <circle cx="11" cy="54" r="6" fill="#2980b9"/>
+  <circle cx="41" cy="54" r="6" fill="#2980b9"/>
+  <!-- Smile -->
+  <path d="M 7 74 Q 26 83 45 74" stroke="#2980b9" stroke-width="4" fill="none" stroke-linecap="round"/>
+  
+  <!-- Sad mask (right side) -->
+  <circle cx="102" cy="64" r="38" fill="white"/>
+  <!-- Eyes for sad mask -->
+  <circle cx="87" cy="54" r="6" fill="#e74c3c"/>
+  <circle cx="117" cy="54" r="6" fill="#e74c3c"/>
+  <!-- Frown -->
+  <path d="M 83 74 Q 102 54 121 74" stroke="#e74c3c" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>

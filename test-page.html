@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Icon Extension - Test Page</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #34495e;
+      margin-top: 40px;
+      background: #ecf0f1;
+      padding: 10px;
+      border-left: 4px solid #3498db;
+    }
+    .test-section {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .should-replace {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    .should-not-replace {
+      background: #f8d7da;
+      border-left: 4px solid #dc3545;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    dialog {
+      border: 2px solid #6c757d;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .modal {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: white;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #3498db;
+    }
+    .dynamic-content {
+      border: 2px dashed #9b59b6;
+      padding: 15px;
+      margin: 20px 0;
+      min-height: 100px;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎭 Meme Icon Extension - Comprehensive Test Page</h1>
+  
+  <div class="info">
+    <strong>📝 Testing Instructions:</strong>
+    <ol>
+      <li>Load the extension in your browser</li>
+      <li>Refresh this page</li>
+      <li>Check if meme values (69, 420, 666, 1337) are replaced with emojis</li>
+      <li>Verify that input fields and dialogs are NOT affected</li>
+    </ol>
+  </div>
+
+  <!-- Test Section 1: Basic Replacements -->
+  <h2>✅ Should Replace - Basic Text</h2>
+  <div class="test-section should-replace">
+    <p>The number 69 should become an emoji (♋︎)</p>
+    <p>The famous 420 should also transform (🌿)</p>
+    <p>Error code 666 occurred in the system (😈)</p>
+    <p>Only 1337 hackers understand this (🤓)</p>
+    <p>Multiple values: 69 and 420 and 666 and 1337 all together!</p>
+  </div>
+
+  <!-- Test Section 2: HTML Context -->
+  <h2>✅ Should Replace - In HTML Elements</h2>
+  <div class="test-section should-replace">
+    <article>
+      <h3>Blog Post Example</h3>
+      <p>This post has <strong>69</strong> likes and <em>420</em> shares.</p>
+      <p>Posted by user <code>hacker1337</code> at timestamp <span>666</span></p>
+      <ul>
+        <li>Item with 69 votes</li>
+        <li>Item with 420 comments</li>
+        <li>Item with 666 views</li>
+        <li>Item rated 1337/10000</li>
+      </ul>
+    </article>
+  </div>
+
+  <!-- Test Section 3: Word Boundaries -->
+  <h2>✅ Should Replace - Word Boundaries (Isolated Numbers)</h2>
+  <div class="test-section should-replace">
+    <p>Score: 69 points</p>
+    <p>Temperature: 420°F</p>
+    <p>Code: 666-HELP</p>
+    <p>Level 1337!</p>
+    <p>The number is exactly 69.</p>
+  </div>
+
+  <!-- Test Section 4: Should NOT Replace -->
+  <h2>❌ Should NOT Replace - Part of Larger Numbers</h2>
+  <div class="test-section should-not-replace">
+    <p>The year 1969 contains 69 but should not be replaced</p>
+    <p>Phone number: 555-420-1234 (420 is part of phone number)</p>
+    <p>ZIP code: 66601 (666 is embedded)</p>
+    <p>Large number: 133700 (1337 is embedded)</p>
+    <p>Decimal: 69.99 or 4.20 (as decimals)</p>
+  </div>
+
+  <!-- Test Section 5: Input Fields -->
+  <h2>❌ Should NOT Replace - Input Fields & Forms</h2>
+  <div class="test-section should-not-replace">
+    <label for="test-input">Regular Input:</label>
+    <input type="text" id="test-input" value="69" placeholder="Type 420 here">
+    
+    <label for="test-number">Number Input:</label>
+    <input type="number" id="test-number" value="666">
+    
+    <label for="test-textarea">Textarea:</label>
+    <textarea id="test-textarea" rows="4">This textarea contains 69, 420, 666, and 1337 - none should be replaced!</textarea>
+    
+    <label for="contenteditable">ContentEditable Div:</label>
+    <div id="contenteditable" contenteditable="true" style="border: 1px solid #ccc; padding: 10px; min-height: 50px;">
+      Edit this: 69 420 666 1337
+    </div>
+  </div>
+
+  <!-- Test Section 6: Dialogs & Modals -->
+  <h2>❌ Should NOT Replace - Dialogs & Modals</h2>
+  <div class="test-section should-not-replace">
+    <dialog open>
+      <h4>Dialog Element</h4>
+      <p>This dialog contains 69 and 420 - should NOT be replaced!</p>
+    </dialog>
+    
+    <div class="modal" role="dialog">
+      <h4>Modal with role="dialog"</h4>
+      <p>Modal content with 666 and 1337 - should NOT be replaced!</p>
+    </div>
+    
+    <div data-modal="true">
+      <h4>Element with data-modal attribute</h4>
+      <p>Contains 69 - should NOT be replaced!</p>
+    </div>
+    
+    <div data-dialog="true">
+      <h4>Element with data-dialog attribute</h4>
+      <p>Contains 420 - should NOT be replaced!</p>
+    </div>
+  </div>
+
+  <!-- Test Section 7: Statistics Cards -->
+  <h2>✅ Should Replace - Stats Display</h2>
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value">69</div>
+      <div>Total Users</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">420</div>
+      <div>Active Sessions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">666</div>
+      <div>Error Count</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1337</div>
+      <div>Reputation Points</div>
+    </div>
+  </div>
+
+  <!-- Test Section 8: Dynamic Content -->
+  <h2>🔄 Dynamic Content Test</h2>
+  <div class="test-section">
+    <p>Use buttons below to dynamically add content (tests MutationObserver):</p>
+    <button onclick="addContent('69')">Add 69</button>
+    <button onclick="addContent('420')">Add 420</button>
+    <button onclick="addContent('666')">Add 666</button>
+    <button onclick="addContent('1337')">Add 1337</button>
+    <button onclick="clearContent()">Clear All</button>
+    
+    <div id="dynamic-container" class="dynamic-content">
+      <p><em>Dynamic content will appear here...</em></p>
+    </div>
+  </div>
+
+  <!-- Test Section 9: Complex Nested HTML -->
+  <h2>✅ Should Replace - Complex Nested Structure</h2>
+  <div class="test-section should-replace">
+    <div>
+      <div>
+        <div>
+          <p>Deeply nested 69</p>
+          <div>
+            <span>Even deeper <strong>420</strong> here</span>
+            <div>
+              <em>And deepest 666</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Section 10: Special Characters & Unicode -->
+  <h2>✅ Should Replace - With Special Characters</h2>
+  <div class="test-section should-replace">
+    <p>前面的数字 69 后面有文字 (Chinese)</p>
+    <p>数字は 420 です (Japanese)</p>
+    <p>الرقم 666 هنا (Arabic)</p>
+    <p>Number 1337 with emoji 🚀 nearby</p>
+    <p>Symbols: [69] {420} (666) <1337></p>
+  </div>
+
+  <!-- Test Section 11: Performance Test -->
+  <h2>⚡ Performance Test - Large DOM</h2>
+  <div class="test-section">
+    <button onclick="generateLargeDOM()">Generate 100 Elements</button>
+    <button onclick="clearLargeDOM()">Clear</button>
+    <div id="large-dom-container"></div>
+  </div>
+
+  <!-- Test Section 12: Edge Cases -->
+  <h2>🔍 Edge Cases</h2>
+  <div class="test-section should-replace">
+    <p>Leading zero: 069 (should this work?)</p>
+    <p>Negative: -69 (should work)</p>
+    <p>Multiple spaces: 69     420     666</p>
+    <p>Punctuation: 69! 420? 666. 1337,</p>
+    <p>Parentheses: (69) [420] {666} &lt;1337&gt;</p>
+    <p>Quotes: "69" '420' `666` '1337'</p>
+  </div>
+
+  <!-- Test Results Summary -->
+  <h2>📊 Test Results Summary</h2>
+  <div class="info">
+    <p><strong>Expected Behavior:</strong></p>
+    <ul>
+      <li>✅ All green sections should show emoji replacements</li>
+      <li>❌ All red sections should keep original numbers</li>
+      <li>🔄 Dynamic content should replace after adding</li>
+      <li>⚡ Large DOM generation should complete quickly (&lt;500ms)</li>
+    </ul>
+    <p><strong>Open your browser's DevTools (F12) to check console logs!</strong></p>
+  </div>
+
+  <script>
+    // Dynamic content test
+    function addContent(value) {
+      const container = document.getElementById('dynamic-container');
+      const p = document.createElement('p');
+      p.textContent = `Dynamic paragraph with value: ${value}`;
+      container.appendChild(p);
+    }
+
+    function clearContent() {
+      const container = document.getElementById('dynamic-container');
+      container.innerHTML = '<p><em>Dynamic content will appear here...</em></p>';
+    }
+
+    // Performance test
+    function generateLargeDOM() {
+      const container = document.getElementById('large-dom-container');
+      const startTime = performance.now();
+      
+      for (let i = 0; i < 100; i++) {
+        const p = document.createElement('p');
+        p.textContent = `Item ${i}: Values are 69, 420, 666, and 1337`;
+        container.appendChild(p);
+      }
+      
+      const endTime = performance.now();
+      console.log(`DOM generation took ${endTime - startTime}ms`);
+      
+      // Give extension time to process
+      setTimeout(() => {
+        const processTime = performance.now();
+        console.log(`Total time including extension processing: ${processTime - startTime}ms`);
+      }, 1000);
+    }
+
+    function clearLargeDOM() {
+      document.getElementById('large-dom-container').innerHTML = '';
+    }
+
+    // Log page load
+    console.log('Test page loaded. Extension should initialize...');
+    console.log('Watch for "Meme Icon Extension" logs in console.');
+  </script>
+</body>
+</html>

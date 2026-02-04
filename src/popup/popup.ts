@@ -89,20 +89,33 @@ class PopupManager {
         this.memeList
       ) {
         const values = data.config.memeMap.values;
-        const memeHTML = Object.entries(values)
-          .map(
-            ([key, emoji]) =>
-              `
-            <div class="meme-item">
-              <span class="meme-key">${this.escapeHtml(key)}</span>
-              <span class="meme-arrow">→</span>
-              <span class="meme-emoji">${emoji}</span>
-            </div>
-          `
-          )
-          .join('');
+        
+        // Clear previous content
+        this.memeList.innerHTML = '';
 
-        this.memeList.innerHTML = memeHTML;
+        // Build HTML safely
+        Object.entries(values).forEach(([key, emoji]) => {
+          const memeItem = document.createElement('div');
+          memeItem.className = 'meme-item';
+          
+          const keySpan = document.createElement('span');
+          keySpan.className = 'meme-key';
+          keySpan.textContent = key;
+          
+          const arrow = document.createElement('span');
+          arrow.className = 'meme-arrow';
+          arrow.textContent = '→';
+          
+          const emojiSpan = document.createElement('span');
+          emojiSpan.className = 'meme-emoji';
+          emojiSpan.textContent = emoji;
+          
+          memeItem.appendChild(keySpan);
+          memeItem.appendChild(arrow);
+          memeItem.appendChild(emojiSpan);
+          
+          this.memeList!.appendChild(memeItem);
+        });
 
         if (this.memeCount) {
           this.memeCount.textContent = Object.keys(values).length.toString();
@@ -256,9 +269,14 @@ class PopupManager {
    * Escape HTML to prevent XSS
    */
   private escapeHtml(text: string): string {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    const map: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, (char) => map[char]);
   }
 }
 

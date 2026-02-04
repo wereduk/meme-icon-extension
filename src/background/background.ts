@@ -151,8 +151,23 @@ class BackgroundManager {
    * Setup extension icon click handler
    */
   private setupExtensionIcon(): void {
+    // Chrome MV3 uses chrome.action
     if (typeof chrome !== 'undefined' && chrome.action) {
       chrome.action.onClicked.addListener((tab: any) => {
+        if (tab.id) {
+          chrome.tabs.sendMessage(
+            tab.id,
+            { type: 'REPROCESS_DOM' },
+            () => {
+              console.log('DOM reprocessed');
+            }
+          );
+        }
+      });
+    }
+    // Firefox and Chrome MV2 use browserAction
+    else if (typeof chrome !== 'undefined' && (chrome as any).browserAction) {
+      (chrome as any).browserAction.onClicked.addListener((tab: any) => {
         if (tab.id) {
           chrome.tabs.sendMessage(
             tab.id,
