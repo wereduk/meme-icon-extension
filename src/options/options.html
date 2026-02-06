@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Icon Extension - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>⚙️ Meme Icon Extension Settings</h1>
+      <p class="subtitle">Customize your meme experience</p>
+    </header>
+
+    <!-- Theme Toggle -->
+    <section class="settings-section">
+      <h2>Appearance</h2>
+      <div class="setting-item">
+        <label for="theme-toggle" class="setting-label">
+          <span>Dark Mode</span>
+          <input type="checkbox" id="theme-toggle" class="toggle-switch">
+        </label>
+        <p class="setting-description">Enable dark theme for better visibility at night</p>
+      </div>
+    </section>
+
+    <!-- Global Toggle -->
+    <section class="settings-section">
+      <h2>Extension Control</h2>
+      <div class="setting-item">
+        <label for="extension-enabled" class="setting-label">
+          <span>Enable Extension</span>
+          <input type="checkbox" id="extension-enabled" class="toggle-switch" checked>
+        </label>
+        <p class="setting-description">Turn the extension on or off</p>
+      </div>
+    </section>
+
+    <!-- Meme Mappings -->
+    <section class="settings-section">
+      <h2>Meme Replacements</h2>
+      <p class="section-description">Choose which memes to replace on web pages</p>
+      
+      <div class="meme-controls">
+        <button id="enable-all" class="btn btn-small">Enable All</button>
+        <button id="disable-all" class="btn btn-small">Disable All</button>
+      </div>
+      
+      <div id="meme-list" class="meme-list">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- Custom Meme Values -->
+    <section class="settings-section">
+      <h2>Custom Meme Values</h2>
+      <p class="section-description">Add your own meme numbers and emojis</p>
+
+      <div class="custom-meme-form">
+        <input id="custom-value" type="text" placeholder="Meme value (e.g., 1337 or 9/11)" />
+        <input id="custom-emoji" type="text" placeholder="Emoji (e.g., 🤓)" maxlength="10" />
+        <button id="add-custom-meme" class="btn btn-secondary">Add</button>
+      </div>
+
+      <div id="custom-meme-list" class="meme-list">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- Domain Rules -->
+    <section class="settings-section">
+      <h2>🌐 Website Rules</h2>
+      <p class="section-description">Control where the extension is active</p>
+
+      <div class="domain-mode">
+        <label class="radio-label">
+          <input type="radio" name="domain-mode" value="blacklist" checked />
+          <span>Blacklist Mode</span> - Exclude specific sites
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="domain-mode" value="whitelist" />
+          <span>Whitelist Mode</span> - Only active on specific sites
+        </label>
+      </div>
+
+      <div id="blacklist-section" class="domain-section">
+        <label class="setting-label" for="exclude-domains">Exclude from (one per line)</label>
+        <textarea id="exclude-domains" rows="4" placeholder="mail.google.com&#10;web.whatsapp.com&#10;discord.com"></textarea>
+        <div class="hint">Extension will be active everywhere except these domains</div>
+      </div>
+
+      <div id="whitelist-section" class="domain-section" style="display: none;">
+        <label class="setting-label" for="include-domains">Only active on (one per line)</label>
+        <textarea id="include-domains" rows="4" placeholder="github.com&#10;reddit.com&#10;news.ycombinator.com"></textarea>
+        <div class="hint">Extension will only be active on these domains</div>
+      </div>
+
+      <button id="save-domain-rules" class="btn btn-secondary">Save Domain Rules</button>
+      <button id="reset-domain-rules" class="btn btn-secondary">Reset Rules</button>
+    </section>
+
+    <!-- Statistics -->
+    <section class="settings-section">
+      <h2>Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Total Replacements</span>
+          <span class="stat-value" id="stat-total">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Extension Enabled</span>
+          <span class="stat-value" id="stat-enabled">Yes</span>
+        </div>
+      </div>
+      <button id="reset-stats" class="btn btn-secondary">Reset Statistics</button>
+    </section>
+
+    <!-- Advanced -->
+    <section class="settings-section">
+      <h2>Advanced</h2>
+      <div class="setting-item">
+        <button id="export-settings" class="btn btn-secondary">Export Settings</button>
+        <button id="import-settings" class="btn btn-secondary">Import Settings</button>
+      </div>
+      <div class="setting-item">
+        <button id="reset-all" class="btn btn-danger">Reset to Default</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Settings are automatically saved to your browser</p>
+      <p id="save-status" class="save-status"></p>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

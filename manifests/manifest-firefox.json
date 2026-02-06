@@ -30,6 +30,10 @@
     "default_popup": "popup.html",
     "default_title": "Meme Icon Extension"
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "meme-icon-extension@example.com",

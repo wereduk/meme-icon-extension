@@ -29,7 +29,7 @@ export class MemeReplacer {
       if (!pattern.enabled) continue;
 
       try {
-        const regex = new RegExp(pattern.pattern, 'g');
+        const regex = new RegExp(pattern.pattern, 'gu');
         this.compiledRegexes.set(pattern.pattern, regex);
       } catch (error) {
         console.error(`Failed to compile regex: ${pattern.pattern}`, error);

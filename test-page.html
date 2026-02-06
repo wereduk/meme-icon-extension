@@ -137,6 +137,16 @@
     <p>The famous 420 should also transform (🌿)</p>
     <p>Error code 666 occurred in the system (😈)</p>
     <p>Only 1337 hackers understand this (🤓)</p>
+    <p>Polish pride 2137 (🍰)</p>
+    <p>The answer is 42 (❓)</p>
+    <p>Goodbye 88 (👋)</p>
+    <p>Count to 123 (↗️)</p>
+    <p>Big Brother 1984 (📖)</p>
+    <p>Pandemic year 2020 (😷)</p>
+    <p>Boobs code 80085 (📚)</p>
+    <p>Sushi code 8008 (🍣)</p>
+    <p>Shrug 67 (⁶🤷‍♂️⁷)</p>
+    <p>Date 9/11 (ᯓ  ✈︎   ▌ ▌)</p>
     <p>Multiple values: 69 and 420 and 666 and 1337 all together!</p>
   </div>
 
@@ -152,6 +162,12 @@
         <li>Item with 420 comments</li>
         <li>Item with 666 views</li>
         <li>Item rated 1337/10000</li>
+        <li>Polish tradition: 2137</li>
+        <li>Level 42 completed</li>
+        <li>Wave goodbye 88</li>
+        <li>Count 123 items</li>
+        <li>Year 1984 reference</li>
+        <li>Pandemic 2020</li>
       </ul>
     </article>
   </div>
@@ -163,6 +179,16 @@
     <p>Temperature: 420°F</p>
     <p>Code: 666-HELP</p>
     <p>Level 1337!</p>
+    <p>The answer: 42</p>
+    <p>Goodbye: 88</p>
+    <p>Count: 123</p>
+    <p>Novel: 1984</p>
+    <p>Year: 2020</p>
+    <p>Polish: 2137</p>
+    <p>Boobs: 80085</p>
+    <p>Sushi: 8008</p>
+    <p>Shrug: 67</p>
+    <p>Historical: 9/11</p>
     <p>The number is exactly 69.</p>
   </div>
 
@@ -174,6 +200,11 @@
     <p>ZIP code: 66601 (666 is embedded)</p>
     <p>Large number: 133700 (1337 is embedded)</p>
     <p>Decimal: 69.99 or 4.20 (as decimals)</p>
+    <p>Year 2020 embedded: 20201 should not replace 2020</p>
+    <p>Polish year: 92137 should not replace 2137</p>
+    <p>Answer embedded: 342 should not replace 42</p>
+    <p>Long wave: 1880 should not replace 88</p>
+    <p>Decimal countdown: 123.45 should not replace 123</p>
   </div>
 
   <!-- Test Section 5: Input Fields -->
@@ -237,6 +268,22 @@
       <div class="stat-value">1337</div>
       <div>Reputation Points</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-value">42</div>
+      <div>Questions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">88</div>
+      <div>Followers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">2137</div>
+      <div>Polish Memes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">67</div>
+      <div>Shrugs</div>
+    </div>
   </div>
 
   <!-- Test Section 8: Dynamic Content -->
@@ -247,6 +294,10 @@
     <button onclick="addContent('420')">Add 420</button>
     <button onclick="addContent('666')">Add 666</button>
     <button onclick="addContent('1337')">Add 1337</button>
+    <button onclick="addContent('42')">Add 42</button>
+    <button onclick="addContent('2137')">Add 2137</button>
+    <button onclick="addContent('67')">Add 67</button>
+    <button onclick="addContent('9/11')">Add 9/11</button>
     <button onclick="clearContent()">Clear All</button>
     
     <div id="dynamic-container" class="dynamic-content">
@@ -296,9 +347,10 @@
     <p>Leading zero: 069 (should this work?)</p>
     <p>Negative: -69 (should work)</p>
     <p>Multiple spaces: 69     420     666</p>
-    <p>Punctuation: 69! 420? 666. 1337,</p>
+    <p>Punctuation: 69! 420? 666. 1337, 42; 88: 123</p>
     <p>Parentheses: (69) [420] {666} &lt;1337&gt;</p>
     <p>Quotes: "69" '420' `666` '1337'</p>
+    <p>All numbers together: 69 420 666 1337 2137 42 88 123 1984 2020 80085 8008 67 9/11</p>
   </div>
 
   <!-- Test Results Summary -->
@@ -335,7 +387,7 @@
       
       for (let i = 0; i < 100; i++) {
         const p = document.createElement('p');
-        p.textContent = `Item ${i}: Values are 69, 420, 666, and 1337`;
+        p.textContent = `Item ${i}: Values are 69, 420, 666, 1337, 42, 88, 2137, 67, and 9/11`;
         container.appendChild(p);
       }
       

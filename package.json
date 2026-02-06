@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack watch --mode development",
     "build": "webpack --mode production && npm run copy-assets",
-    "copy-assets": "cp src/popup/popup.html dist/ && mkdir -p dist/icons && cp icons/icon-*.png dist/icons/ && rm -f dist/icons/*.svg dist/icons/*.py dist/icons/*.sh dist/icons/README.md",
+    "copy-assets": "cp src/popup/popup.html dist/ && cp src/options/options.html dist/ && cp src/options/options.css dist/ && cp src/core/meme-map.json dist/core/ && mkdir -p dist/icons && cp icons/icon-*.png dist/icons/ && rm -f dist/icons/*.svg dist/icons/*.py dist/icons/*.sh dist/icons/README.md",
     "build:chrome": "npm run build && node build/package-chrome.js",
     "build:firefox": "npm run build && node build/package-firefox.js",
     "build:safari": "npm run build && node build/package-safari.js",

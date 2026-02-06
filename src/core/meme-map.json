@@ -6,38 +6,124 @@
     "1337": "🤓",
     "2137": "🍰",
     "80085": "📚",
-    "8008": "🍣"
+    "8008": "🍣",
+    "42": "❓",
+    "88": "👋",
+    "123": "↗️",
+    "1984": "📖",
+    "2020": "😷",
+    "4chan": "🐱",
+    "ok": "👌",
+    "based": "💪",
+    "cringe": "😬",
+    "simp": "🥺",
+    "uwu": "💕",
+    "owo": "👀",
+    "67": "⁶🤷‍♂️⁷",
+    "9/11": "ᯓ  ✈︎   ▌ ▌"
   },
   "regexPatterns": [
     {
-      "pattern": "\\b69\\b",
+      "pattern": "(?<![.\\d-])69(?![.\\d-])",
       "replacement": "♋︎",
       "enabled": true,
       "description": "Nice meme"
     },
     {
-      "pattern": "\\b420\\b",
+      "pattern": "(?<![.\\d-])420(?![.\\d-])",
       "replacement": "🌿",
       "enabled": true,
       "description": "Blaze it"
     },
     {
-      "pattern": "\\b666\\b",
+      "pattern": "(?<![.\\d-])666(?![.\\d-])",
       "replacement": "😈",
       "enabled": true,
       "description": "Devil number"
     },
     {
-      "pattern": "\\b1337\\b",
+      "pattern": "(?<![.\\d-])1337(?![.\\d-])",
       "replacement": "🤓",
       "enabled": true,
       "description": "Leet speak"
     },
     {
-      "pattern": "\\b2137\\b",
+      "pattern": "(?<![.\\d-])2137(?![.\\d-])",
       "replacement": "🍰",
       "enabled": true,
       "description": "Polish independence"
+    },
+    {
+      "pattern": "(?<![.\\d-])42(?![.\\d-])",
+      "replacement": "❓",
+      "enabled": true,
+      "description": "Answer to everything"
+    },
+    {
+      "pattern": "(?<![.\\d-])88(?![.\\d-])",
+      "replacement": "👋",
+      "enabled": true,
+      "description": "Goodbye"
+    },
+    {
+      "pattern": "(?<![.\\d-])123(?![.\\d-])",
+      "replacement": "↗️",
+      "enabled": true,
+      "description": "Count"
+    },
+    {
+      "pattern": "(?<![.\\d-])1984(?![.\\d-])",
+      "replacement": "📖",
+      "enabled": true,
+      "description": "Big Brother"
+    },
+    {
+      "pattern": "(?<![.\\d-])2020(?![.\\d-])",
+      "replacement": "😷",
+      "enabled": true,
+      "description": "Pandemic year"
+    },
+    {
+      "pattern": "(?<![.\\d-])80085(?![.\\d-])",
+      "replacement": "📚",
+      "enabled": true,
+      "description": "Boobs"
+    },
+    {
+      "pattern": "(?<![.\\d-])8008(?![.\\d-])",
+      "replacement": "🍣",
+      "enabled": true,
+      "description": "Sushi"
+    },
+    {
+      "pattern": "\\boki?\\b",
+      "replacement": "👌",
+      "enabled": false,
+      "description": "OK sign"
+    },
+    {
+      "pattern": "\\buwu\\b",
+      "replacement": "💕",
+      "enabled": false,
+      "description": "Cute emoticon"
+    },
+    {
+      "pattern": "\\bowo\\b",
+      "replacement": "👀",
+      "enabled": false,
+      "description": "Surprised emoticon"
+    },
+    {
+      "pattern": "(?<![.\\d-])67(?![.\\d-])",
+      "replacement": "⁶🤷‍♂️⁷",
+      "enabled": true,
+      "description": "Shrug 67"
+    },
+    {
+      "pattern": "(?<![.\\d])9\\/11(?![.\\d])",
+      "replacement": "ᯓ  ✈︎   ▌ ▌",
+      "enabled": true,
+      "description": "September 11th"
     }
   ]
 }

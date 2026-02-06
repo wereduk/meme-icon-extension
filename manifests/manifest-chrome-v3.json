@@ -41,6 +41,6 @@
     "default_popup": "popup.html",
     "default_title": "Meme Icon Extension"
   },
-  "web_accessible_resources": [],
+  "options_page": "options.html",
   "data_collection_permissions": []
 }

@@ -19,6 +19,7 @@ class BackgroundManager {
       enabled: true,
       memeMap: memeMapData as MemeMap,
       excludeDomains: [],
+      includeDomains: [],
       debounceMs: 300,
       maxReplacementsPerRun: 1000,
     };
@@ -31,6 +32,7 @@ class BackgroundManager {
     console.log('Meme Icon Extension: background initialized');
     this.loadConfiguration();
     this.setupMessageListeners();
+    this.setupStorageListeners();
     this.setupExtensionIcon();
   }
 
@@ -42,21 +44,141 @@ class BackgroundManager {
 
     if (typeof chrome !== 'undefined' && chrome.storage) {
       chrome.storage.local.get(storageKey, (result: any) => {
-        if (result[storageKey]) {
-          const storedData = result[storageKey];
-          // Merge stored config with default to get new meme values
-          const updatedConfig = {
-            ...storedData.config,
-            memeMap: this.defaultConfig.memeMap, // Always use latest meme-map
-          };
-          this.saveConfiguration(updatedConfig);
-          console.log('Updated configuration with latest meme values');
-        } else {
-          console.log('Using default configuration');
-          this.saveConfiguration(this.defaultConfig);
+        const baseConfig = result[storageKey]?.config || this.defaultConfig;
+        this.refreshConfigFromSettings(baseConfig);
+      });
+    }
+  }
+
+  /**
+   * Listen for storage changes to sync settings
+   */
+  private setupStorageListeners(): void {
+    if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === 'sync' && (changes.patterns || changes.enabled)) {
+          this.refreshConfigFromSettings();
         }
       });
     }
+  }
+
+  /**
+   * Get sync settings (enabled + patterns)
+   */
+  private async getSyncSettings(): Promise<{
+    enabled: boolean;
+    patterns: Record<string, boolean>;
+    customMemes: { value: string; emoji: string }[];
+    includeDomains: string[];
+    excludeDomains: string[];
+  }> {
+    return new Promise((resolve) => {
+      if (typeof chrome === 'undefined' || !chrome.storage) {
+        resolve({
+          enabled: true,
+          patterns: {},
+          customMemes: [],
+          includeDomains: [],
+          excludeDomains: [],
+        });
+        return;
+      }
+
+      chrome.storage.sync.get(
+        {
+          enabled: true,
+          patterns: {},
+          customMemes: [],
+          includeDomains: [],
+          excludeDomains: [],
+        },
+        (items: any) => {
+        resolve({
+          enabled: items.enabled !== false,
+          patterns: items.patterns || {},
+          customMemes: items.customMemes || [],
+          includeDomains: items.includeDomains || [],
+          excludeDomains: items.excludeDomains || [],
+        });
+      }
+      );
+    });
+  }
+
+  /**
+   * Apply pattern settings to meme map
+   */
+  private applyPatternSettings(memeMap: MemeMap, patterns: Record<string, boolean>): MemeMap {
+    return {
+      ...memeMap,
+      regexPatterns: memeMap.regexPatterns.map((pattern) => {
+        const key = pattern.description || pattern.pattern;
+        return {
+          ...pattern,
+          enabled: patterns[key] !== false,
+        };
+      }),
+    };
+  }
+
+  private escapeRegex(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  private buildCustomPattern(value: string): string {
+    const escaped = this.escapeRegex(value);
+    if (/^\d+$/.test(value)) {
+      return `(?<![.\\d-])${escaped}(?![.\\d-])`;
+    }
+    return `(?<!\\w)${escaped}(?!\\w)`;
+  }
+
+  private applyCustomMemes(memeMap: MemeMap, customMemes: { value: string; emoji: string }[]): MemeMap {
+    if (!customMemes.length) {
+      return memeMap;
+    }
+
+    const customValues: Record<string, string> = {};
+    const customPatterns = customMemes.map((meme) => {
+      const description = `custom:${meme.value}`;
+      customValues[meme.value] = meme.emoji;
+      return {
+        pattern: this.buildCustomPattern(meme.value),
+        replacement: meme.emoji,
+        enabled: true,
+        description,
+      };
+    });
+
+    return {
+      ...memeMap,
+      values: {
+        ...memeMap.values,
+        ...customValues,
+      },
+      regexPatterns: [...memeMap.regexPatterns, ...customPatterns],
+    };
+  }
+
+  /**
+   * Refresh local config using sync settings
+   */
+  private async refreshConfigFromSettings(baseConfig?: ContentScriptConfig): Promise<void> {
+    const settings = await this.getSyncSettings();
+    const currentConfig = baseConfig || (await this.getConfiguration());
+    const withCustom = this.applyCustomMemes(this.defaultConfig.memeMap, settings.customMemes);
+    const withPatterns = this.applyPatternSettings(withCustom, settings.patterns);
+    const updatedConfig: ContentScriptConfig = {
+      ...currentConfig,
+      enabled: settings.enabled,
+      memeMap: withPatterns,
+      includeDomains: settings.includeDomains,
+      excludeDomains: settings.excludeDomains,
+    };
+
+    this.saveConfiguration(updatedConfig);
+    this.broadcastConfigUpdate(updatedConfig);
   }
 
   /**

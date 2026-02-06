@@ -35,6 +35,11 @@ class ContentScriptManager {
       return;
     }
 
+    if (!this.isDomainAllowed()) {
+      console.log('Meme Icon Extension: domain filtered, skipping DOM processing');
+      return;
+    }
+
     // Initial DOM walk
     this.walkDOM();
 
@@ -47,6 +52,9 @@ class ContentScriptManager {
    */
   private walkDOM(): void {
     try {
+      if (!this.isDomainAllowed()) {
+        return;
+      }
       const processed = this.walker.walkAndReplace(document.documentElement);
       if (processed > 0) {
         console.log(
@@ -109,7 +117,48 @@ class ContentScriptManager {
   private updateConfig(newConfig: ContentScriptConfig): void {
     this.config = newConfig;
     this.replacer.updateMemeMap(newConfig.memeMap);
-    this.walkDOM();
+    if (this.config.enabled && this.isDomainAllowed()) {
+      this.walkDOM();
+    }
+  }
+
+  private isDomainAllowed(): boolean {
+    const hostname = window.location.hostname.toLowerCase();
+    const includeDomains = this.normalizeDomains(this.config.includeDomains || []);
+    const excludeDomains = this.normalizeDomains(this.config.excludeDomains || []);
+
+    if (excludeDomains.some((domain) => this.matchesDomain(hostname, domain))) {
+      return false;
+    }
+
+    if (includeDomains.length > 0) {
+      return includeDomains.some((domain) => this.matchesDomain(hostname, domain));
+    }
+
+    return true;
+  }
+
+  private normalizeDomains(domains: string[]): string[] {
+    return domains
+      .map((domain) => {
+        const trimmed = domain.trim().toLowerCase();
+        if (!trimmed) return '';
+        try {
+          if (trimmed.includes('://')) {
+            return new URL(trimmed).hostname.toLowerCase();
+          }
+        } catch {
+          return trimmed;
+        }
+        return trimmed;
+      })
+      .filter(Boolean);
+  }
+
+  private matchesDomain(hostname: string, rule: string): boolean {
+    if (!rule) return false;
+    if (hostname === rule) return true;
+    return hostname.endsWith(`.${rule}`);
   }
 
   /**
@@ -130,6 +179,7 @@ const defaultConfig: ContentScriptConfig = {
   enabled: true,
   memeMap: memeMapData as MemeMap,
   excludeDomains: [],
+  includeDomains: [],
   debounceMs: 300,
   maxReplacementsPerRun: 1000,
 };

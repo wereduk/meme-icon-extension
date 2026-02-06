@@ -3,12 +3,12 @@
  * Handles user interactions and communication with background script
  */
 
+import type { MemeMap, RegexPattern } from '@core/types';
+
 interface StorageData {
   config: {
     enabled: boolean;
-    memeMap: {
-      values: Record<string, string>;
-    };
+    memeMap: MemeMap;
   };
   lastUpdate: number;
 }
@@ -22,9 +22,59 @@ class PopupManager {
   private resetButton: HTMLElement | null = null;
   private testButton: HTMLElement | null = null;
   private notification: HTMLElement | null = null;
+  private themeToggle: HTMLButtonElement | null = null;
 
   constructor() {
     this.initializeElements();
+    this.initTheme();
+  }
+
+  /**
+   * Initialize Dark Mode
+   */
+  private initTheme(): void {
+    this.themeToggle = document.getElementById('themeToggle') as HTMLButtonElement;
+    
+    // Load saved theme preference
+    chrome.storage.sync.get('darkMode', (result: any) => {
+      const isDark = result.darkMode === true;
+      this.applyTheme(isDark);
+    });
+
+    // Setup theme toggle
+    this.themeToggle?.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      this.applyTheme(!isDark);
+      chrome.storage.sync.set({ darkMode: !isDark });
+    });
+
+    // Watch for system preference changes
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!chrome.storage.sync.get('darkMode')) {
+          this.applyTheme(e.matches);
+        }
+      });
+    }
+  }
+
+  /**
+   * Apply theme
+   */
+  private applyTheme(isDark: boolean): void {
+    const htmlElement = document.documentElement;
+    
+    if (isDark) {
+      htmlElement.setAttribute('data-theme', 'dark');
+      if (this.themeToggle) {
+        this.themeToggle.textContent = '☀️';
+      }
+    } else {
+      htmlElement.removeAttribute('data-theme');
+      if (this.themeToggle) {
+        this.themeToggle.textContent = '🌙';
+      }
+    }
   }
 
   /**
@@ -85,43 +135,86 @@ class PopupManager {
       if (
         data &&
         data.config.memeMap &&
-        data.config.memeMap.values &&
+        data.config.memeMap.regexPatterns &&
         this.memeList
       ) {
-        const values = data.config.memeMap.values;
-        
-        // Clear previous content
-        this.memeList.innerHTML = '';
+        const patterns = data.config.memeMap.regexPatterns;
+        const values = data.config.memeMap.values || {};
 
-        // Build HTML safely
-        Object.entries(values).forEach(([key, emoji]) => {
-          const memeItem = document.createElement('div');
-          memeItem.className = 'meme-item';
-          
-          const keySpan = document.createElement('span');
-          keySpan.className = 'meme-key';
-          keySpan.textContent = key;
-          
-          const arrow = document.createElement('span');
-          arrow.className = 'meme-arrow';
-          arrow.textContent = '→';
-          
-          const emojiSpan = document.createElement('span');
-          emojiSpan.className = 'meme-emoji';
-          emojiSpan.textContent = emoji;
-          
-          memeItem.appendChild(keySpan);
-          memeItem.appendChild(arrow);
-          memeItem.appendChild(emojiSpan);
-          
-          this.memeList!.appendChild(memeItem);
+        chrome.storage.sync.get({ patterns: {} }, (syncData: any) => {
+          const patternSettings = syncData.patterns || {};
+
+          // Clear previous content
+          this.memeList!.innerHTML = '';
+
+          // Build HTML safely
+          patterns.forEach((pattern: RegexPattern) => {
+            const memeItem = document.createElement('div');
+            memeItem.className = 'meme-item';
+
+            const info = document.createElement('div');
+            info.className = 'meme-item-info';
+
+            const keySpan = document.createElement('span');
+            keySpan.className = 'meme-key';
+            keySpan.textContent = this.getValueLabel(pattern.replacement, values, pattern);
+
+            const arrow = document.createElement('span');
+            arrow.className = 'meme-arrow';
+            arrow.textContent = '→';
+
+            const emojiSpan = document.createElement('span');
+            emojiSpan.className = 'meme-emoji';
+            emojiSpan.textContent = pattern.replacement;
+
+            info.appendChild(keySpan);
+            info.appendChild(arrow);
+            info.appendChild(emojiSpan);
+
+            const toggle = document.createElement('input');
+            toggle.type = 'checkbox';
+            toggle.className = 'meme-toggle';
+
+            const settingKey = pattern.description || pattern.pattern;
+            toggle.dataset.pattern = settingKey;
+            toggle.checked = patternSettings[settingKey] !== false;
+
+            toggle.addEventListener('change', () => {
+              patternSettings[settingKey] = toggle.checked;
+              chrome.storage.sync.set({ patterns: patternSettings }, () => {
+                this.showNotification('Pattern updated', 'success');
+              });
+            });
+
+            memeItem.appendChild(info);
+            memeItem.appendChild(toggle);
+            this.memeList!.appendChild(memeItem);
+          });
+
+          if (this.memeCount) {
+            this.memeCount.textContent = patterns.length.toString();
+          }
         });
-
-        if (this.memeCount) {
-          this.memeCount.textContent = Object.keys(values).length.toString();
-        }
       }
     });
+  }
+
+  /**
+   * Get a human-readable label for a meme item
+   */
+  private getValueLabel(
+    replacement: string,
+    values: Record<string, string>,
+    pattern: { description?: string; pattern: string }
+  ): string {
+    if (pattern.description?.startsWith('custom:')) {
+      return pattern.description.replace('custom:', '');
+    }
+    const match = Object.entries(values).find(([, emoji]) => emoji === replacement);
+    if (match) {
+      return match[0];
+    }
+    return pattern.description || pattern.pattern;
   }
 
   /**
@@ -141,6 +234,14 @@ class PopupManager {
     if (this.testButton) {
       this.testButton.addEventListener('click', () => this.handleTest());
     }
+
+    const settingsLink = document.getElementById('settingsLink');
+    settingsLink?.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (chrome?.runtime?.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+      }
+    });
   }
 
   /**
@@ -152,6 +253,10 @@ class PopupManager {
     }
 
     const enabled = this.enableToggle.checked;
+
+    if (chrome.storage?.sync) {
+      chrome.storage.sync.set({ enabled });
+    }
 
     chrome.storage.local.get('meme-icon-config', (result: any) => {
       const data = result['meme-icon-config'] as StorageData | undefined;
